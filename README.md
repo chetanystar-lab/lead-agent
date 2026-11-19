@@ -63,4 +63,4 @@ Launch the Streamlit app:
 ```powershell
 streamlit run app.py
 ```
-Open your browser at: *[(http://localhost:8000/)** (or http://localhost:8501).
+Open your browser at: *[[(http://localhost:8000/)** (or http://localhost:8501)](http://localhost:8000).
