@@ -1,0 +1,15 @@
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# SQLite databases
+*.db
+leads.db
