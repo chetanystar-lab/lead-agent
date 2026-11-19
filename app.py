@@ -308,24 +308,29 @@ with tab_all:
         st.info("No leads found for this filter.")
     else:
         for l in leads:
-            status_class = f"badge-{l['status']}"
-profession = l.get('profession')
+            status_val = l.get('status') or 'quoted'
+            status_class = f"badge-{status_val}"
+            profession = l.get('profession')
 
-if isinstance(profession, str) and profession.strip():
-    prof_title = data.CATALOG.get(profession, {}).get('title') or profession.title()
-else:
-    prof_title = "Unknown"
+            if isinstance(profession, str) and profession.strip():
+                clean_prof = profession.strip()
+                prof_title = data.CATALOG.get(clean_prof, {}).get('title') or clean_prof.title()
+            else:
+                prof_title = "Unknown"
 
-            with st.expander(f"Lead #{l['id']} • {prof_title} • Status: {status_text} • {l['location']}"):
+            status_text = status_val.replace('_', ' ').upper()
+            location_text = l.get('location') or 'Unknown'
+
+            with st.expander(f"Lead #{l['id']} • {prof_title} • Status: {status_text} • {location_text}"):
                 col_a, col_b = st.columns([3, 1])
                 with col_a:
-                    st.markdown(f"**Customer Message:** *\"{l['message']}\"*")
-                    st.write(f"**Job Type:** `{l['job_type']}` | **Urgency:** `{l['urgency']}` | **Score:** `{l['lead_score']}`")
-                    if l['provider_name']:
+                    st.markdown(f"**Customer Message:** *\"{l.get('message', '')}\"*")
+                    st.write(f"**Job Type:** `{l.get('job_type')}` | **Urgency:** `{l.get('urgency')}` | **Score:** `{l.get('lead_score')}`")
+                    if l.get('provider_name'):
                         st.write(f"**Assigned Provider:** {l['provider_name']}")
-                    if l['booked_slot']:
+                    if l.get('booked_slot'):
                         st.success(f"**Booked Slot:** 📌 {l['booked_slot']}")
-                    if l['reply']:
+                    if l.get('reply'):
                         st.info(f"**Agent Reply:**\n\n{l['reply']}")
                 with col_b:
                     st.markdown(f"<span class='{status_class}'>{status_text}</span>", unsafe_allow_html=True)
